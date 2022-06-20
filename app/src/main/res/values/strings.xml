@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">YesOrNoApp</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="gif_description">GifWithYesOrNo</string>
+    <string name="reload">reload</string>
+</resources>
