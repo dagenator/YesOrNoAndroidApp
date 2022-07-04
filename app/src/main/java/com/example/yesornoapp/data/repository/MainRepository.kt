@@ -1,8 +1,8 @@
 package com.example.yesornoapp.data.repository
 
-import com.example.yesornoapp.data.retrofit.ApiHelper
+import com.example.yesornoapp.data.retrofit.ApiService
+import javax.inject.Inject
 
-class MainRepository(private val apiHelper: ApiHelper) {
-
-    suspend fun getAnswer() = apiHelper.getAnswer()
+class MainRepository @Inject constructor(val apiService: ApiService) {
+    suspend fun getAnswer() = apiService.getAnswer()
 }

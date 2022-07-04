@@ -1,6 +1,5 @@
 package com.example.yesornoapp.presenter
 
-
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -9,16 +8,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.yesornoapp.R
+import com.example.yesornoapp.core.app.App
 import com.example.yesornoapp.data.Resource
 import com.example.yesornoapp.data.Status
 import com.example.yesornoapp.data.factory.ViewModelFactory
 import com.example.yesornoapp.data.model.Answer
-import com.example.yesornoapp.data.retrofit.ApiHelper
-import com.example.yesornoapp.data.retrofit.RetrofitBuilder
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
 
     private var answerObserver: Observer<Resource<Answer>> = Observer { resource ->
@@ -50,9 +51,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))).get(MainViewModel::class.java)
+        (applicationContext as App).appComponent.inject(this)
+
+        //viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         setupObservers()
-        setUpButtons()
+        //setUpButtons()
         updateAnswer()
     }
 
@@ -77,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             .into(mainGif)
     }
 
-    fun updateAnswer(){
+    private fun updateAnswer(){
         viewModel.getAnswer()
     }
 
@@ -90,11 +94,11 @@ class MainActivity : AppCompatActivity() {
         mainText.text = error
     }
 
-    private fun setUpButtons(){
-        val button = findViewById<Button>(R.id.reload_button)
-        button.setOnClickListener {
-            updateAnswer()
-        }
-    }
+//    private fun setUpButtons(){
+//        val button = findViewById<Button>(R.id.reload_button)
+//        button.setOnClickListener {
+//            updateAnswer()
+//        }
+//    }
 
 }
