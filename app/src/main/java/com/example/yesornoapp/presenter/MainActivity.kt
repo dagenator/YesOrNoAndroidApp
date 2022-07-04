@@ -13,6 +13,7 @@ import com.example.yesornoapp.data.Resource
 import com.example.yesornoapp.data.Status
 import com.example.yesornoapp.data.factory.ViewModelFactory
 import com.example.yesornoapp.data.model.Answer
+import com.example.yesornoapp.databinding.ActivityMainBinding
 import javax.inject.Inject
 
 
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
 
     private var answerObserver: Observer<Resource<Answer>> = Observer { resource ->
         resource?.let { resource ->
@@ -49,39 +51,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         (applicationContext as App).appComponent.inject(this)
 
-        //viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        setupObservers()
-        //setUpButtons()
         updateAnswer()
+        setUpButtons()
+        setContentView(binding.root)
     }
 
     private fun setLoadingVisibility(isLoad: Boolean) {
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val mainGif = findViewById<ImageView>(R.id.main_gif)
-        val mainText = findViewById<TextView>(R.id.main_text)
-
-        progressBar.visibility = if (isLoad) View.VISIBLE else View.GONE
-        mainGif.visibility = if (isLoad) View.GONE else View.VISIBLE
-        mainText.visibility = if (isLoad) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if (isLoad) View.VISIBLE else View.GONE
+        binding.mainGif.visibility = if (isLoad) View.GONE else View.VISIBLE
+        binding.mainText.visibility = if (isLoad) View.GONE else View.VISIBLE
     }
 
     private fun setAnswer(answer: Answer) {
-        val mainGif = findViewById<ImageView>(R.id.main_gif)
-        val mainText = findViewById<TextView>(R.id.main_text)
-
-        mainText.text = answer.answer
+        binding.mainText.text = answer.answer
         Glide
             .with(this)
             .load(answer.image)
-            .into(mainGif)
+            .into(binding.mainGif)
     }
 
     private fun updateAnswer(){
+        setupObservers() // почему обсервер сбрасывается?
         viewModel.getAnswer()
     }
 
@@ -90,15 +85,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun  showErrorMessage(error:String){
-        val mainText = findViewById<TextView>(R.id.main_text)
-        mainText.text = error
+        binding.mainText.text = error
     }
 
-//    private fun setUpButtons(){
-//        val button = findViewById<Button>(R.id.reload_button)
-//        button.setOnClickListener {
-//            updateAnswer()
-//        }
-//    }
-
+    private fun setUpButtons(){
+        binding.reloadButton?.let{
+            it.setOnClickListener {
+                updateAnswer()
+            }
+        }
+    }
 }

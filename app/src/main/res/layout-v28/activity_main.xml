@@ -44,17 +44,17 @@
         android:textAlignment="center"
         />
 
-<!--    <Button-->
+    <Button
 
-<!--        android:id="@+id/reload_button"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="60dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/main_gif"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        android:text="@string/reload"-->
-<!--        android:textSize="30sp"-->
-<!--        android:layout_margin="32dp"-->
-<!--        />-->
+        android:id="@+id/reload_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@id/main_gif"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/reload"
+        android:textSize="30sp"
+        android:layout_margin="32dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
