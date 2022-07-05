@@ -6,7 +6,7 @@ import com.example.yesornoapp.data.repository.MainRepository
 import com.example.yesornoapp.data.retrofit.ApiService
 import com.example.yesornoapp.presenter.MainViewModel
 
-class ViewModelFactory(private val apiService: ApiService) : ViewModelProvider.Factory {
+class ViewModelFactory(val apiService: ApiService) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {

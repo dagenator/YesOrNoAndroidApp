@@ -2,12 +2,11 @@ package com.example.yesornoapp.presenter
 
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.yesornoapp.R
 import com.example.yesornoapp.core.app.App
 import com.example.yesornoapp.data.Resource
 import com.example.yesornoapp.data.Status
@@ -19,10 +18,12 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
+
 
     private var answerObserver: Observer<Resource<Answer>> = Observer { resource ->
         resource?.let { resource ->
@@ -54,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         (applicationContext as App).appComponent.inject(this)
-
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
         updateAnswer()
         setUpButtons()
         setContentView(binding.root)
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             .into(binding.mainGif)
     }
 
-    private fun updateAnswer(){
+    private fun updateAnswer() {
         setupObservers() // почему обсервер сбрасывается?
         viewModel.getAnswer()
     }
@@ -84,12 +85,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.getAnswer().observe(this, answerObserver)
     }
 
-    private fun  showErrorMessage(error:String){
+    private fun showErrorMessage(error: String) {
         binding.mainText.text = error
     }
 
-    private fun setUpButtons(){
-        binding.reloadButton?.let{
+    private fun setUpButtons() {
+        binding.reloadButton?.let {
             it.setOnClickListener {
                 updateAnswer()
             }

@@ -5,8 +5,9 @@ import androidx.lifecycle.liveData
 import com.example.yesornoapp.data.Resource
 import com.example.yesornoapp.data.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
 
     fun getAnswer() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))

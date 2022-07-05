@@ -7,15 +7,15 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class AppModule(private val context:Context) {
+class AppModule(private val context: Context) {
 
     @Provides
-    fun provideContext():Context{
+    fun provideContext(): Context {
         return context
     }
 
     @Provides
-    fun provideMainViewModelFactory(apiService: ApiService):ViewModelFactory{
+    fun provideMainViewModelFactory(apiService: ApiService): ViewModelFactory {
         return ViewModelFactory(apiService)
     }
 
