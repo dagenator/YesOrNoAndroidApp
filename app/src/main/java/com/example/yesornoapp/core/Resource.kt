@@ -1,4 +1,4 @@
-package com.example.yesornoapp.data
+package com.example.yesornoapp.core
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {

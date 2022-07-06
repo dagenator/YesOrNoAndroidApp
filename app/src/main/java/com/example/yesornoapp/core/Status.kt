@@ -1,4 +1,4 @@
-package com.example.yesornoapp.data
+package com.example.yesornoapp.core
 
 enum class Status {
     SUCCESS,

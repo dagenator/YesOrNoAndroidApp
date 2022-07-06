@@ -2,15 +2,14 @@ package com.example.yesornoapp.presenter
 
 import android.os.Bundle
 import android.view.View
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.yesornoapp.R
 import com.example.yesornoapp.core.app.App
-import com.example.yesornoapp.data.Resource
-import com.example.yesornoapp.data.Status
+import com.example.yesornoapp.core.db.AppDatabase
+import com.example.yesornoapp.core.Resource
+import com.example.yesornoapp.core.Status
 import com.example.yesornoapp.data.factory.ViewModelFactory
 import com.example.yesornoapp.data.model.Answer
 import com.example.yesornoapp.databinding.ActivityMainBinding
@@ -19,10 +18,16 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var db: AppDatabase
+
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
+
 
     private var answerObserver: Observer<Resource<Answer>> = Observer { resource ->
         resource?.let { resource ->
@@ -35,11 +40,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 Status.ERROR -> {
                     setLoadingVisibility(false)
-                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
-
+                    resource.data?.let {
+                        setAnswer(it)
+                    }
                     resource.message?.let {
-                        showErrorMessage(it)
-                        print(it)
+                        showErrorMessage(true, it)
                     }
                 }
                 Status.LOADING -> {
@@ -49,16 +54,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         (applicationContext as App).appComponent.inject(this)
-
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
         updateAnswer()
         setUpButtons()
-        setContentView(binding.root)
     }
 
     private fun setLoadingVisibility(isLoad: Boolean) {
@@ -69,30 +76,40 @@ class MainActivity : AppCompatActivity() {
 
     private fun setAnswer(answer: Answer) {
         binding.mainText.text = answer.answer
-        Glide
-            .with(this)
-            .load(answer.image)
-            .into(binding.mainGif)
+        try {
+            Glide
+                .with(this)
+                .load(answer.image)
+                .into(binding.mainGif)
+        } catch (e: Exception) {
+            showErrorMessage(true, e.message.toString())
+        }
+
     }
 
-    private fun updateAnswer(){
-        setupObservers() // почему обсервер сбрасывается?
+    private fun updateAnswer() {
+        setupObservers() // почему обсервер сбрасывается если его сетать только в onCreate?
         viewModel.getAnswer()
     }
 
     private fun setupObservers() {
         viewModel.getAnswer().observe(this, answerObserver)
+
     }
 
-    private fun  showErrorMessage(error:String){
-        binding.mainText.text = error
+    private fun showErrorMessage(show: Boolean, error: String = "null") {
+        binding.errorText?.let {
+            it.text = error
+            it.visibility = if (show) View.VISIBLE else View.GONE
+        }
     }
 
-    private fun setUpButtons(){
-        binding.reloadButton?.let{
+    private fun setUpButtons() {
+        binding.reloadButton?.let {
             it.setOnClickListener {
                 updateAnswer()
             }
         }
     }
+
 }

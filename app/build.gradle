@@ -16,6 +16,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -34,6 +40,7 @@ android {
     buildFeatures{
         viewBinding true
     }
+
 }
 
 
@@ -72,4 +79,18 @@ dependencies {
     //gif
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+//
+//    //ktx android
+//    implementation 'androidx.core:core-ktx:1.8.0'
+//    implementation 'androidx.fragment:fragment-ktx:1.5.0'
+//    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    //Room
+    implementation("androidx.room:room-runtime:2.4.2")
+    annotationProcessor("androidx.room:room-compiler:2.4.2")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:2.4.2")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:2.4.2")
 }
