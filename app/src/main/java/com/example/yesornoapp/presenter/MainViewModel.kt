@@ -2,19 +2,36 @@ package com.example.yesornoapp.presenter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.example.yesornoapp.data.Resource
-import com.example.yesornoapp.data.repository.MainRepository
+import com.example.yesornoapp.core.Resource
+import com.example.yesornoapp.core.Status
+import com.example.yesornoapp.data.model.Answer
+import com.example.yesornoapp.data.useCases.GetAnswerFromApiUseCase
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel (val getAnswerFromApi: GetAnswerFromApiUseCase) :
+    ViewModel() {
 
     fun getAnswer() = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = mainRepository.getAnswer()))
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        getAnswerFromApi().collect { resource ->
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    resource.data?.let {
+                        emit(resource)
+                    }
+                }
+                Status.ERROR -> {
+                    resource.data?.let {
+                        val loadAnswer = Answer("last:" + it.answer, it.forced, it.image)
+                        emit(Resource.error(loadAnswer, resource.message ?: "error happened" ))
+                    }
+                    if(resource.data ==null)
+                        emit(Resource.error(null, "DB empty + "+resource.message ))
+
+                }
+                Status.LOADING -> {
+                    emit(Resource.loading(null))
+                }
+            }
         }
     }
 }

@@ -1,12 +1,13 @@
 package com.example.yesornoapp.core.di
 
 import android.content.Context
-import com.example.yesornoapp.data.factory.ViewModelFactory
-import com.example.yesornoapp.data.retrofit.ApiService
+import com.example.yesornoapp.data.useCases.GetAnswerFromApiUseCase
+import com.example.yesornoapp.data.useCases.GetAnswerFromApiUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
-@Module
+@Module()
 class AppModule(private val context: Context) {
 
     @Provides
@@ -15,8 +16,10 @@ class AppModule(private val context: Context) {
     }
 
     @Provides
-    fun provideMainViewModelFactory(apiService: ApiService): ViewModelFactory {
-        return ViewModelFactory(apiService)
+    fun providesGetAnswerFromApiUseCases( getAnswerFromApiImpl: GetAnswerFromApiUseCaseImpl): GetAnswerFromApiUseCase{
+        return getAnswerFromApiImpl
     }
 
+
 }
+

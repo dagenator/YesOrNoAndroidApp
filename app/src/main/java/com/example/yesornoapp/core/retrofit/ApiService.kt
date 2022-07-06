@@ -1,4 +1,4 @@
-package com.example.yesornoapp.data.retrofit
+package com.example.yesornoapp.core.retrofit
 
 import com.example.yesornoapp.data.model.Answer
 import retrofit2.http.GET
