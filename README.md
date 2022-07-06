@@ -17,5 +17,6 @@ Main cause is to try different tech solution
 ## ToDo
 * android KTX
 * Room automatic migrations
+* Testing (Any mockito library or superMockito)
 
 
