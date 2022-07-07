@@ -1,8 +1,8 @@
 package com.example.yesornoapp.data.repository
 
+import com.example.yesornoapp.core.Resource
 import com.example.yesornoapp.core.db.AppDatabase
 import com.example.yesornoapp.core.retrofit.ApiService
-import com.example.yesornoapp.core.Resource
 import com.example.yesornoapp.data.model.Answer
 import com.example.yesornoapp.data.model.AnswerBD
 import kotlinx.coroutines.flow.flow
@@ -30,14 +30,14 @@ class MainRepository @Inject constructor(val apiService: ApiService, val answerB
     }
 
 
-    private suspend fun getLastAnswerFromDatabase(): Answer {
+    fun getLastAnswerFromDatabase(): Answer {
         val answerDao = answerBD.answerDao()
         val answerBD: AnswerBD = answerDao.getLastAnswer()[0]
         return Answer(answerBD.answer, false, answerBD.image)
     }
 
 
-    private suspend fun saveAnswerToDatabase(answer: Answer) {
+    fun saveAnswerToDatabase(answer: Answer) {
         val answerDao = answerBD.answerDao()
         answerDao.insertNewAnswer(
             AnswerBD(
@@ -48,7 +48,7 @@ class MainRepository @Inject constructor(val apiService: ApiService, val answerB
         )
     }
 
-    private suspend fun getDatabaseSize(): Int {
+    fun getDatabaseSize(): Int {
         val answerDao = answerBD.answerDao()
         return answerDao.getSize()
     }
