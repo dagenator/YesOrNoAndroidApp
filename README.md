@@ -13,11 +13,12 @@ Main cause is to try different tech solution
 - Room
 - Clean Architecture
 - Async (Kotlin coroutines + flow)
+- Unit Tests(With Mokito)
 
 ## ToDo
 * android KTX
 * Room automatic migrations
-* Testing (Any mockito library or PowerMockito)
 * Testing integration tests
+
 
 
