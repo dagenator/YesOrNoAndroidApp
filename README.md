@@ -20,5 +20,7 @@ Main cause is to try different tech solution
 * Room automatic migrations
 * Testing integration tests
 
+## Articles for different themes are in doc "articles"
+
 
 
