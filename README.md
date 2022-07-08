@@ -18,7 +18,7 @@ Main cause is to try different tech solution
 ## ToDo
 * android KTX
 * Room automatic migrations
-* Testing integration tests
+* Testing. Write some integration tests
 
 ## Articles for different themes are in doc "articles"
 
