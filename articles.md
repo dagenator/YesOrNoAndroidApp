@@ -13,4 +13,5 @@
         }
     }
  ```
- 
+ ## Retrofit 2
+ https://blog.mindorks.com/using-retrofit-with-kotlin-coroutines-in-android
